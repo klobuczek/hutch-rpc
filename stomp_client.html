@@ -34,7 +34,7 @@
     function clientReady(client) {
         client.publish({
             destination: '/amq/queue/api_v2_consumer',
-            headers: {'reply-to': '/temp-queue/reply_queue_name'},
+            headers: {'reply-to': '/temp-queue/reply'},
             body: JSON.stringify({ 'n': 30 })
         });
     }
