@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2></h2>
+<p id="demo"></p>
+
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>
+<script>
+    client = new StompJs.Client({
+        brokerURL: 'ws://localhost:15674/ws',
+        connectHeaders: {
+            login: 'guest',
+            passcode: 'guest',
+        },
+        debug: function (str) {
+            console.log('STOMP DEBUG: ' + str);
+        },
+        reconnectDelay: 200,
+        onUnhandledMessage: function (message) {
+            // Ideally here the subsciption id should be checked if it is the one we are waiting for
+            if (message.body) {
+                alert('got message=>' + JSON.stringify(message.body));
+            } else {
+                alert('got empty message');
+            }
+        },
+    });
+    client.activate();
+
+    window.setTimeout(clientReady, 5000, client);
+
+    function clientReady(client) {
+        client.publish({
+            destination: '/amq/queue/api_v2_consumer',
+            headers: {'reply-to': '/temp-queue/reply_queue_name'},
+            body: JSON.stringify({ 'n': 30 })
+        });
+    }
+
+</script>
+
+</body>
+</html>

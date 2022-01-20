@@ -8,3 +8,7 @@ In a separate window:
     rvm use 3.1
     gem install bunny
     ruby api_client.rb
+
+To test stomp client over websocket:
+
+    open stomp_client.html
